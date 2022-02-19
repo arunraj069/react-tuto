@@ -6,11 +6,14 @@ import SeasonDisplay from "./components/seasons/SeasonDisplay";
 import Spinner from "./components/spinner/Spinner";
 
 class App extends React.Component{
-    state = {lat:null,errorMessage:''};
+    state = {lat:null,errorMessage:'',currentTime:null};
     componentDidMount = ()=>{
         window.navigator.geolocation.getCurrentPosition(
             position => this.setState({lat:position.coords.latitude}),
             error => this.setState({errorMessage : "could not able to identify your location"}));
+            setInterval(() => {
+                this.setState({currentTime:new Date().toLocaleTimeString()}); 
+            }, 1000)
     }
     renderContent = ()=>{
         if(this.state.lat !== null){
