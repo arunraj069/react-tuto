@@ -3,6 +3,8 @@ import Accordion from './components/Accordion';
 import SearchBar from './components/SearchBar';
 import Dropdown from './components/Dropdown';
 import Translate from './components/Translate';
+import Route from './components/Route';
+import Header from './components/Header';
 
 const items = [
     {
@@ -36,11 +38,38 @@ const options = [
     value :"green"
   }
 ]
+const showAccordion = ()=>{
+  if(window.location.pathname === '/'){
+    return <Accordion items={items}/>
+  }
+}
+const showTranslate = ()=>{
+  if(window.location.pathname === '/translate'){
+    return <Translate />
+  }
+}
 function App() {
   const [selected, onSelection] = useState(options[0]);
   const [showDropdown, onshowDropdown] = useState(true);
   return (
     <div>
+      <Header/>
+      <Route path="/">
+        <Accordion items={items}/>
+      </Route>
+      <Route path="/dropdown">
+        <Dropdown 
+        label = 'Select a color'
+        options={options}
+        selected= {selected} 
+        onChangeSelection={onSelection}
+        />
+      </Route>
+      <Route path="/translate">
+       <Translate/>
+      </Route>
+      {/* {showAccordion()}
+      {showTranslate()} */}
       {/* <Accordion items={items}/> */}
       {/* <SearchBar /> */}
       {/* <button onClick={()=>onshowDropdown(!showDropdown)}>Toggle Dropdown</button>
@@ -57,7 +86,7 @@ function App() {
         </>
         : null
       } */}
-      <Translate />
+      {/* <Translate /> */}
     </div>
   )
 }
