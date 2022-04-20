@@ -1,28 +1,22 @@
 import React,{useState,useEffect} from "react";
-import axios from "./api/axios";
 import SearchBar from "./SearchBar";
 import VideoList from "./VideoList";
 import VideoDetail from "./VideoDetail";
+import useVideos from "../hooks/useVideos";
 
 function App() {
-  const [videos,setVideos] = useState([]);
+  
   const [selectedVideo,setSelectedVideo] = useState(null);
+  const [videos,search] = useVideos('react js');
   useEffect(()=>{
-    onTermSubmit('react js');
-  },[]);
-  const onTermSubmit= async (term)=>{
-    const response = await axios.get('/search',{
-        params: {
-            q : term
-        },
-    });
-    setVideos(response.data.items);
-    setSelectedVideo(response.data.items[0]);
-}
+    setSelectedVideo(videos[0]);
+  },[videos])
+  
+
 
 return (
     <div className="ui container" style={{marginTop : '10px'}}>
-        <SearchBar onTermSubmit={onTermSubmit}/>
+        <SearchBar onTermSubmit={search}/>
         <div className="ui grid">
             <div className="ui row">
                 <div className="eleven wide column">
