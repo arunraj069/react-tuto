@@ -2,21 +2,33 @@ import React from "react";
 import ReactDom from "react-dom";
 import Comment from "./components/comments/Comment";
 import ApprovalCard from "./components/comments/ApprovalCard";
-const App = ()=>{
-    const obj = {
-        name : "arun",
-        comment : "Hi hello there"
-    };
-    return (
-        <div>
-            <ApprovalCard>
-                <Comment {...obj}/>
-            </ApprovalCard>
-            <ApprovalCard>
-                <Comment {...obj}/>
-            </ApprovalCard>
-        </div>
-    )
+import SeasonDisplay from "./components/seasons/SeasonDisplay";
+import Spinner from "./components/spinner/Spinner";
+
+class App extends React.Component{
+    state = {lat:null,errorMessage:'',currentTime:null};
+    componentDidMount = ()=>{
+        window.navigator.geolocation.getCurrentPosition(
+            position => this.setState({lat:position.coords.latitude}),
+            error => this.setState({errorMessage : "could not able to identify your location"}));
+            setInterval(() => {
+                this.setState({currentTime:new Date().toLocaleTimeString()}); 
+            }, 1000)
+    }
+    renderContent = ()=>{
+        if(this.state.lat !== null){
+            return <SeasonDisplay obj={this.state}/>
+        }else{
+            return <Spinner />
+        }
+    }
+    render(){
+      return (
+        <div >
+          {this.renderContent()}
+        </div>  
+      );
+    }
 }
 
 ReactDom.render(
